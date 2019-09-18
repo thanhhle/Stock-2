@@ -46,7 +46,7 @@ namespace Problem_2
         // Change the stock's value every 500 milliseconds
         private void Activate()
         {
-            for(int i = 0; i < 50; i++)
+            for(int i = 0; i < 100; i++)
             {
                 Thread.Sleep(500);
                 ChangeStockValue();
@@ -82,14 +82,19 @@ namespace Problem_2
         // Event handler to help write the date and time when the threshold is reach, the stock's name, the stock's intial value, and the stock's current value to a textfile
         private void StockMarket_WriteToFile(object sender, EventData e)
         {
-            // Wait for the resource to be free
-            lock (_locker)
+            try
             {
-                using (StreamWriter outputFile = new StreamWriter(Path.Combine(_docPath, "output.txt"), true))
+                // Wait for the resource to be free
+                lock (_locker)
                 {
-                    outputFile.WriteLine(e.StockName.PadRight(20) + e.InitialValue.ToString().PadRight(20) + e.CurrentValue.ToString().PadRight(20) + e.NumOfChanges.ToString().PadRight(20) + e.CurrentTime);
+                    using (FileStream file = new FileStream(Path.Combine(_docPath, "output.txt"), FileMode.Append, FileAccess.Write, FileShare.Read))
+                    using (StreamWriter outputFile = new StreamWriter(file))
+                    {
+                        outputFile.WriteLine(e.StockName.PadRight(20) + e.InitialValue.ToString().PadRight(20) + e.CurrentValue.ToString().PadRight(20) + e.NumOfChanges.ToString().PadRight(20) + e.CurrentTime);
+                    }
                 }
             }
+            catch (IOException) { }
         }
     }
     
