@@ -1,4 +1,4 @@
-# Stock
+# StockThread2
 An application written in C#
 
 ## Description
