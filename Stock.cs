@@ -46,11 +46,10 @@ namespace Problem_2
         // Change the stock's value every 500 milliseconds
         private void Activate()
         {
-            for(int i = 0; i < 100; i++)
-            {
-                Thread.Sleep(500);
+            for(int i = 0; i < 50; i++)
+            { 
                 ChangeStockValue();
-                i++;
+                Thread.Sleep(500);
             }
         }
 
